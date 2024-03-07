@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+            body { margin: 0; }
+            #yagis { height: 100vh; position: relative; overflow: hidden;}
+            #yagis > * { position: absolute }
+        </style>
+    </head>
+    <body>
+        <div id="yagis"></div>
+
+        <script>
+            const yagis = document.getElementById("yagis")
+            const type = ['🌸', '🌼', '🌸', '💮', '🌹', '🏵', '🏶']
+            const arr = []
+            let wh = yagis.offsetHeight
+            let ww = yagis.offsetWidth
+            
+
+            class Cicek {
+                constructor(name, symbl, size, x, y, dy) {
+                    this.name = name, 
+                    this.symbl = symbl,
+                    this.size = size,
+                    this.x = x,
+                    this.y = y,
+                    this.dy = dy
+                }
+                create(main) {
+                    main.innerHTML += `<div id="${this.name}">${type[this.symbl]}</div>`
+                    this.show()                    
+                }
+                move() {
+                    if (this.y >= wh - this.size) {
+                        this.elem.remove()
+                    } else {
+                        this.y += this.dy
+                        this.show()
+                    }
+                }
+                show() {
+                    this.elem = document.getElementById(this.name),
+                    this.elem.style.fontSize = this.size + 'px'
+                    this.elem.style.left = this.x + 'px'
+                    this.elem.style.top = this.y + 'px'
+                    this.elem.style.lineHeight = 1
+                }
+            }
+
+            setInterval(createNew, 1000)
+            setInterval(moveAll, 40)
+            function moveAll() {
+                for (let i = 0; i < arr.length; i++) {
+                    const cicek = arr[i];
+                    cicek.move()
+                }
+            }
+            function createNew() {
+                let name = `c${arr.length}`
+                let symbl = rand(0, type.length - 1)
+                let size = rand(16, 32)
+                let x = rand(0, ww - size)
+                let y = 0
+                let dy = rand(2, 5)
+                let cicek = new Cicek(name, symbl, size, x, y, dy)
+                arr.push(cicek)
+                cicek.create(yagis)
+                
+            }
+            
+            function rand(min, max) {
+                return Math.floor(Math.random() * (max - min + 1) ) + min;
+            }
+        </script>
+    </body>
+</html>
